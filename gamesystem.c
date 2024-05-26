@@ -26,7 +26,7 @@ void printHexa(int animal) {
             printf("\U0001F988");
             break;
         case BEAVER:
-            printf("\U0001F9AB ");
+            printf("\U0001F9AB");
             break;
         case EAGLE:
             printf("\U0001F985");
