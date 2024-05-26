@@ -5,73 +5,94 @@
 #include "joueur.h"
 #include "gamesystem.h"
 
-#define PENGUIN 0
-#define SHARK 1
-#define DOLPHIN 2
-#define EAGLE 3
-#define BEAR 4
-#define CROCODILE 5
 #define ROW 9
 #define COLUMN 9
 
 int main() {
     srand(time(NULL));
 
-    int nbj;
-    int new_x = 0, new_y = 0; // Initialisation des coordonnées
-
-    printf("Combien de personnes vont participer au jeu ? ");
-    if (scanf("%d", &nbj) != 1 || nbj <= 0) {
-        fprintf(stderr, "Erreur de lecture du nombre de joueurs.\n");
+    if (system("clear") != 0) {
+        fprintf(stderr, "Error executing 'clear' command.\n");
         exit(EXIT_FAILURE);
     }
 
-    Hexagone *tabDisable = malloc(sizeof(Hexagone) * 8);
-    if (tabDisable == NULL) {
-        fprintf(stderr, "Erreur d'allocation mémoire pour tabDisable.\n");
+    int nbj;
+    int new_x = 0, new_y = 0;
+
+    printf("How many people will take part in the game? ");
+    if (scanf("%d", &nbj) != 1 || nbj <= 0) {
+        fprintf(stderr, "Misreading the number of players.\n");
         exit(EXIT_FAILURE);
     }
 
     Hexagone **grid = createGrid(ROW, COLUMN, nbj);
     if (grid == NULL) {
-        fprintf(stderr, "Erreur d'allocation mémoire pour la grille.\n");
-        free(tabDisable);
+        fprintf(stderr, "Memory allocation error for grid.\n");
         exit(EXIT_FAILURE);
     }
-
-    Joueur *tab = beginning(nbj, grid);
+    
+    Player *tab = beginning(nbj, grid);
     if (tab == NULL) {
-        fprintf(stderr, "Erreur d'allocation mémoire pour les joueurs.\n");
+        fprintf(stderr, "Memory allocation error for players.\n");
         for (int i = 0; i < ROW; i++) {
             free(grid[i]);
         }
         free(grid);
-        free(tabDisable);
         exit(EXIT_FAILURE);
     }
 
-    printf("Lancement du tour\n");
-    int cpt;
-    while(cpt!=nbj){
-        cpt = 0;
-    for (int i = 0 ; i<nbj ; i++){
-        if(verif_joueur_bloquer(grid, tab[i])==-1){
-            cpt +=1;
+    if (system("clear") != 0) {
+        fprintf(stderr, "Error executing the 'clear' command..\n");
+        for (int i = 0; i < ROW; i++) {
+            free(grid[i]);
+        }
+        free(grid);
+        for (int i = 0; i < nbj; i++) {
+            free(tab[i].name);
+            free(tab[i].animals);
+        }
+        free(tab);
+        exit(EXIT_FAILURE);
+    }
+    printf("Tour launch\n");
+    
+    
+    do{
+        // Game turn for each player
+        turn(tab, nbj, grid, &new_x, &new_y);
+        printf("%d", turn(tab, nbj, grid, &new_x, &new_y));
+    }while(turn(tab, nbj, grid, &new_x, &new_y) != nbj);
+        
+
+    printf("All players are blocked. End of the game.\n");
+    
+    Player winner = tab[0];
+    for(int i = 1; i < nbj; i++){
+        if(winner.score < tab[i].score){
+            winner = tab[i];
         }
     }
-        tour(tab, nbj, grid, &new_x, &new_y);
+    int restart = -1;
+    printf("the winner is %s with a score of %d\n", winner.name, winner.score);
+    printf("Type 0 : Restart \n Type 1: Leave\n");
+    do{
+        if (scanf("%d", &restart) != 1 || nbj <= 0) {
+            fprintf(stderr, "Erreur de lecture.\n");
+            exit(EXIT_FAILURE);
+        }
+    }while(restart != 0 && restart != 1);
+    if(restart == 0){
+        main();
     }
     
-
-    // Libération de la mémoire allouée
+    // Freeing allocated memory
     for (int i = 0; i < ROW; i++) {
         free(grid[i]);
     }
     free(grid);
-    free(tabDisable);
     for (int i = 0; i < nbj; i++) {
-        free(tab[i].nom);
-        free(tab[i].pingouins);
+        free(tab[i].name);
+        free(tab[i].animals);
     }
     free(tab);
 
