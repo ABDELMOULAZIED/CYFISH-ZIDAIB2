@@ -10,24 +10,24 @@
   #define BEAR 4
   #define CROCODILE 5
 
-  typedef struct Pingouin Pingouin;
-  struct Pingouin{
+  typedef struct Animal Animal;
+  struct Animal{
       int x;
       int y;
       int valide; // 0 : valide, -1 : invalide 
   };
   
-  typedef struct Joueur Joueur;
-  struct Joueur{
+  typedef struct Player Player;
+  struct Player{
     int num;
     int nbp;
-    char *nom;    
+    char *name;    
     int score;
-    int fpenguin;//changfement d'emoji en fonction desjoueurs
-    Pingouin* pingouins;
+    int fanimal;//the form of the emojie
+    Animal* animals;
   };
 
-  Pingouin createPingouin();
-  Joueur createJoueur(int nbj, Joueur *tab);
+  Animal createAnimal();//create an animal
+  Player createPlayer(int nbj, Player *tab);//create a player
 
 #endif
