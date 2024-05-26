@@ -26,7 +26,7 @@ void printHexa(int animal) {
             printf("\U0001F988");
             break;
         case BEAVER:
-            printf("\U0001F9AB");
+            printf("\U0001F9AB ");
             break;
         case EAGLE:
             printf("\U0001F985");
@@ -185,11 +185,11 @@ void choose_position_start2(Player *j, Hexagone **grid, int nbj, int i) {
         j->animals[k].y = y;
         grid[x][y].player = -1;
         grid[x][y].animal = i;
-
+        j->score++;
         // Debug display to check coordinates
         printf("Animal %d from %s placed in (%d, %d)\n", k, j->name, x, y);
     }
-    j->score++;
+    
     printf("\n");
 }
 
@@ -468,34 +468,35 @@ int player_blocked(Hexagone **grid, Player j){
 
 int turn(Player *tab, int nbj, Hexagone **grid, int *new_x, int *new_y) {
     if (tab == NULL || grid == NULL || new_x == NULL || new_y == NULL) {
-        fprintf(stderr, "Error: NULL pointer passed to tour function.\n");
+        fprintf(stderr, "Error: NULL pointer passed to turn function.\n");
         return 0;
     }
     int playerBlockedNumber = 0;
 
     for (int i = 0; i < nbj; i++) { 
+ 
         printf("Beginning of the turn for player %d: %s\n", i, tab[i].name);
-        
+
         if (system("clear") != 0) {
             fprintf(stderr, "Erreur d'exécution de la commande 'clear'.\n");
             exit(EXIT_FAILURE);
         }
-        
+
         printGame(tab, nbj, grid);
 
         if (player_blocked(grid, tab[i]) == 1) {
             printf("The %s player is blocked and can no longer play.\n", tab[i].name);
             playerBlockedNumber++;
             continue;
-        }
-        else {
+        } else {
             int k;
             printf("It's %s' turn\n", tab[i].name);
-    
+
             // Display the coordinates of the current player's animal
             for (int j = 0; j < tab[i].nbp; j++) {
                 printf("Animal %d: (%d, %d)\n", j, tab[i].animals[j].x, tab[i].animals[j].y);
             }
+
             // Prompt the player to choose a animal to move and the direction
             do {
                 printf("Which animal do you want to move ? (0 à %d)\n", tab[i].nbp - 1);
@@ -505,16 +506,20 @@ int turn(Player *tab, int nbj, Hexagone **grid, int *new_x, int *new_y) {
                 }
                 if (k < 0 || k >= tab[i].nbp) {
                     printf("Invalid animal number. Please enter a number between 0 and %d.\n", tab[i].nbp - 1);
+                } else if (animal_blocked(grid, tab[i].animals[k]) == 1) {
+                    printf("This animal cannot move. Please choose another animal.\n");
+                    k = -1; // Reset k to force the loop to repeat
                 }
-            } while (k < 0 || k >= tab[i].nbp || tab[i].animals[k].valide == 1);
-            //make the animal moove
+            } while (k < 0 || k >= tab[i].nbp || tab[i].animals[k].valide == -1);
+
+            // Make the animal move
             do {
-                printf("Moving the animal%d\n", k);
+                printf("Moving the animal %d\n", k);
                 moove_player(tab[i].animals[k], new_x, new_y, grid);
                 printf("New animal coordinates: (%d, %d)\n", *new_x, *new_y);
             } while (verifMooves(grid, tab[i].animals[k].x, tab[i].animals[k].y, *new_x, *new_y) != 0);
 
-            // Update the grid and structures with the new coordinates and informations
+            // Update the grid and structures with the new coordinates and information
             printf("You moved your animal well\n");
             grid[tab[i].animals[k].x][tab[i].animals[k].y].active = -1;
             grid[tab[i].animals[k].x][tab[i].animals[k].y].player = 0;
@@ -529,9 +534,9 @@ int turn(Player *tab, int nbj, Hexagone **grid, int *new_x, int *new_y) {
         }
     }
 
-
     return playerBlockedNumber;
 }
+
 
 // Game status display function
 void printGame(Player *tab, int nbj, Hexagone **grid) {
