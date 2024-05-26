@@ -1,44 +1,69 @@
-CY-FISH
-Description du jeu
+# CY-FISH
+## Description du jeu
 
 CY-FISH est un jeu de stratégie où des pingouins s'affrontent pour attraper le plus de poissons sur un iceberg en train de fondre. Le jeu se déroule sur une grille hexagonale. Chaque joueur contrôle plusieurs pingouins qu'il déplace pour collecter des poissons tout en évitant les cases qui ont déjà fondu.
-Règles du jeu
 
-    Début du jeu :
-        Le programme demande le nombre de joueurs (entre 2 et 6) et leurs noms.
-        La taille de la grille est définie (au moins 9x9 cases hexagonales).
-        Le nombre de pingouins dépend du nombre de joueurs :
-            2 joueurs : 4 pingouins chacun
-            3 joueurs : 3 pingouins chacun
-            4 joueurs : 2 pingouins chacun
-            5 et 6 joueurs : 1 pingouins chacun
-    Mise en place :
-        Chaque case hexagonale contient entre 1 et 3 poissons, déterminés aléatoirement.
-        Les pingouins commencent sur des cases avec 1 poisson
+## Prérequis
 
-    Déroulement du jeu :
-        À chaque tour, le joueur actif doit déplacer un de ses pingouins.
-        Le déplacement se fait en ligne droite, sur un nombre de cases librement choisi.
-        Les pingouins ne peuvent pas traverser des cases occupées ou des cases fondues.
-        Après chaque déplacement, la case de départ fond et les poissons dessus disparaissent
-        Les cases fondues ne peuvent plus être traversées ou occupées.
++ GCC (GNU Compiler Collection)
++ make
 
-    Fin de la partie :
-        La partie se termine lorsque tous les joueurs sont bloqués (aucun déplacement possible).
-        Le joueur avec le plus de poissons collectés gagne.
+## Compilation
 
-Variantes du jeu
+Pour compiler l'application, naviguez jusqu'au répertoire du projet et exécutez la commande suivante :
 
-    Grilles Hexagonales :
-        HEXA_A,
+```sh
+make
+```
+Cette commande génère un exécutable nommé exec.
 
-    Positions de départ :
-        START_AUTO : Les positions initiales sont choisies aléatoirement par le programme.
-        START_MANUAL : Les joueurs choisissent leurs positions initiales.
+## Exécution
+Après la compilation, vous pouvez exécuter l'application avec la commande suivante :
 
-    Comptage des poissons :
-        FISH_NORMAL : Chaque poisson vaut 1 point.
-        on peut rajouter un handicap, aux autres joueurs c'est à dire rajouter des points à certains.
+
+```sh
+./exec
+```
+
+
+
+## Règles du jeu
+
+### Début du jeu :
++ Le programme demande le nombre de joueurs (entre 2 et 6) et leurs noms.
+La taille de la grille est définie (au moins 9x9 cases hexagonales).
+Le nombre de pingouins dépend du nombre de joueurs :
+    + 2 joueurs : 4 pingouins chacun
+    + 3 joueurs : 3 pingouins chacun
+    + 4 joueurs : 2 pingouins chacun
+    + 5 et 6 joueurs : 1 pingouins chacun
+### Mise en place :
++ Chaque case hexagonale contient entre 1 et 3 poissons, déterminés aléatoirement.
+    Les pingouins commencent sur des cases avec 1 poisson
+
+### Déroulement du jeu :
++ À chaque tour, le joueur actif doit déplacer un de ses pingouins.
+    Le déplacement se fait en ligne droite, sur un nombre de cases librement choisi.
+    Les pingouins ne peuvent pas traverser des cases occupées ou des cases fondues.
+    Après chaque déplacement, la case de départ fond et les poissons dessus disparaissent
+    Les cases fondues ne peuvent plus être traversées ou occupées.
+
+### Fin de la partie :
++ La partie se termine lorsque tous les joueurs sont bloqués (aucun déplacement possible).
++ Le joueur avec le plus de poissons collectés gagne.
+
+## Variantes du jeu
+
+### Grilles Hexagonales :
++ HEXA_A,
+
+### Positions de départ :
++ START_AUTO : Les positions initiales sont choisies aléatoirement par le programme.
++ START_MANUAL : Les joueurs choisissent leurs positions initiales.
+
+### Comptage des poissons :
+    FISH_NORMAL : Chaque poisson vaut 1 point.
+    on peut rajouter un handicap, aux autres joueurs c'est à dire rajouter des points à certains.
 
 Instructions de compilation et d'exécution
 téléchargez les documents et les mettres dans un fichiers seul
