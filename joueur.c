@@ -5,7 +5,7 @@
 #include <string.h>
 #include <time.h>
 
-#define NOM 50
+#define NAME 50
 #define PENGUIN 0
 #define SHARK 1
 #define DOLPHIN 2
@@ -13,46 +13,51 @@
 #define BEAR 4
 #define CROCODILE 5
 
-Pingouin createPingouin() {
-    Pingouin p;
+Animal createAnimal() {
+    Animal p;
     p.x = 0;
     p.y = 0;
     p.valide = 0;
     return p;
 }
 
-Joueur createJoueur(int nbj, Joueur *tab) {
+Player createPlayer(int nbj, Player *tab) {
     int tA[] = {PENGUIN, SHARK, BEAR, EAGLE, CROCODILE, DOLPHIN};
-    Joueur j;
+    Player j;
     j.score = 0;
     j.nbp = 0;
-    j.nom = (char *)malloc(sizeof(char) * NOM);
-    if (j.nom == NULL) {
-        fprintf(stderr, "Erreur d'allocation mémoire pour le nom du joueur.\n");
+    j.name = (char *)malloc(sizeof(char) * NAME);
+    if (j.name == NULL) {
+        fprintf(stderr, "Memory allocation error for player name.\n");
         exit(EXIT_FAILURE);
     }
 
-    printf("Quel est votre nom ? ");
-    if (scanf("%49s", j.nom) != 1) {
-        fprintf(stderr, "Erreur de lecture du nom du joueur.\n");
-        free(j.nom);
+    printf("What is your name? ? ");
+    if (scanf("%49s", j.name) != 1) {
+        fprintf(stderr, "Error reading player name.\n");
+        free(j.name);
         exit(EXIT_FAILURE);
     }
 
-    // Calcul du nombre de pingouins pour ce joueur
-    int pingouinsCount = (nbj < 5) ? (6 - nbj) : 1; // Ajustement de la logique
-    j.pingouins = (Pingouin *)malloc(sizeof(Pingouin) * pingouinsCount);
-    if (j.pingouins == NULL) {
-        fprintf(stderr, "Erreur d'allocation mémoire pour les pingouins.\n");
-        free(j.nom);
+    // Calculating the number of penguins for this player
+    int animalsCount;
+    if (nbj < 5) {
+        animalsCount = 6 - nbj;
+    } else {
+        animalsCount = 1;
+    }
+    j.animals = (Animal *)malloc(sizeof(Animal) * animalsCount);
+    if (j.animals == NULL) {
+        fprintf(stderr, "Memory allocation error for penguins.\n");
+        free(j.name);
         exit(EXIT_FAILURE);
     }
-
-    for (int i = 0; i < pingouinsCount; i++) {
-        j.pingouins[i] = createPingouin();
-        tab[i].fpenguin = tA[i % (sizeof(tA) / sizeof(tA[0]))]; // Assurez-vous de ne pas dépasser les limites du tableau tA
+    // Initializing the animals array
+    for (int i = 0; i < animalsCount; i++) {
+        j.animals[i] = createAnimal();
+        tab[i].fanimal = tA[i % (sizeof(tA) / sizeof(tA[0]))]; 
     }
-    j.nbp = pingouinsCount;
+    j.nbp = animalsCount;
     
     return j;
 }
