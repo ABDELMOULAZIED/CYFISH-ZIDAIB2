@@ -189,6 +189,7 @@ void choose_position_start2(Player *j, Hexagone **grid, int nbj, int i) {
         // Debug display to check coordinates
         printf("Animal %d from %s placed in (%d, %d)\n", k, j->name, x, y);
     }
+    j->score++;
     printf("\n");
 }
 
